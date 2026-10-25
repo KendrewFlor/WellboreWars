@@ -1,0 +1,309 @@
+/* =====================================================================
+   Cards: frame, discipline colours, CSS-drawn art, rarity foils, units
+   Everything visual on a card is drawn here — no images.
+   ===================================================================== */
+
+/* Discipline → --dc (discipline colour) */
+.d-drilling { --dc: var(--drilling); --dc2: #7a2a00; }
+.d-geoscience { --dc: var(--geoscience); --dc2: #3a2a16; }
+.d-reservoir { --dc: var(--reservoir); --dc2: #4a2c00; }
+.d-production { --dc: var(--production); --dc2: #0d3a22; }
+.d-completions { --dc: var(--completions); --dc2: #0f2a4f; }
+.d-hse { --dc: var(--hse); --dc2: #3a2f00; }
+.d-economics { --dc: var(--economics); --dc2: #26124f; }
+.d-wildcat { --dc: var(--wildcat); --dc2: #4a0f2c; }
+.d-hazard { --dc: var(--hazard); --dc2: #3a070e; }
+/* Rarity → --rc (gem/glow colour) */
+.r-common { --rc: var(--r-common); }
+.r-uncommon { --rc: var(--r-uncommon); }
+.r-rare { --rc: var(--r-rare); }
+.r-epic { --rc: var(--r-epic); }
+.r-legendary { --rc: var(--r-legendary); }
+.r-brilliant { --rc: #ff2bd6; }
+
+/* ---------- the card ---------- */
+.card {
+  --w: 180px;
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 5 / 7;
+  font-size: calc(var(--w) / 13.5);
+  border-radius: calc(var(--w) * 0.07);
+  padding: calc(var(--w) * 0.03);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--dc) 85%, #fff), var(--dc) 40%, var(--dc2));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  color: #111a1d;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s, filter 0.2s;
+  flex: none;
+}
+.card.is-small { --w: 140px; }
+.card:hover { transform: translateY(-4px); }
+.card:focus-visible { outline-offset: 3px; }
+.c-frame {
+  position: relative; height: 100%;
+  display: flex; flex-direction: column;
+  border-radius: calc(var(--w) * 0.05);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 236, 226, 0.95)),
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(0, 0, 0, 0.03) 6px 7px);
+  overflow: hidden;
+}
+.c-cost {
+  position: absolute; z-index: 3; left: calc(var(--w) * -0.005); top: calc(var(--w) * -0.005);
+  width: 1.95em; height: 1.95em; display: grid; place-items: center;
+  font: 800 1.35em/1 var(--font-display); color: #fff;
+  background: radial-gradient(circle at 35% 30%, #4a6b78, #13282f 70%);
+  border: 0.14em solid var(--dc); border-radius: 50%;
+  text-shadow: 0 1px 0 #000;
+}
+.card.is-cheaper .c-cost { color: var(--ok); border-color: var(--ok); }
+.card.is-pricier .c-cost { color: var(--bad); border-color: var(--bad); }
+.c-gem {
+  position: absolute; z-index: 3; right: 0.45em; top: 0.5em; width: 0.9em; height: 0.9em;
+  background: var(--rc); transform: rotate(45deg); box-shadow: 0 0 0 0.12em rgba(0, 0, 0, 0.55), 0 0 0.6em var(--rc);
+}
+.r-brilliant .c-gem { background: var(--oil-slick); animation: spin 3s linear infinite; }
+.c-name {
+  margin: 0; padding: 0.3em 0.5em 0.1em; font: 700 1.05em/1.1 var(--font-display); color: #10181b;
+  text-align: center; text-wrap: balance;
+}
+.c-type { margin: 0; padding: 0 0.5em; font: 600 0.7em var(--font-display); color: #3d4f55; text-align: center; letter-spacing: 0.03em; }
+.c-kws { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25em; margin: 0.25em 0.4em 0; }
+.kw { font: 700 0.68em/1 var(--font-display); padding: 0.22em 0.45em; border-radius: 0.3em; background: #1d3a43; color: #fff; }
+.kw-casing { background: #5d6b70; } .kw-bop { background: #2f6fb5; } .kw-spud { background: #c4561a; } .kw-fracture { background: #7a3cc2; }
+.kw-recovery { background: #2b8a55; } .kw-sour { background: #7d8a1a; } .kw-waterflood { background: #1a7d8a; } .kw-dual { background: #b0233a; }
+.c-text { margin: 0.3em 0.55em 0; font-size: 0.78em; line-height: 1.25; color: #1d2a2f; text-align: center; }
+.c-flavor { margin: auto 0.6em 0.5em; padding-top: 0.2em; font: italic 0.66em/1.2 Georgia, serif; color: #5d6b70; text-align: center; }
+.c-pow, .c-int {
+  position: absolute; bottom: 0.25em; z-index: 3; width: 1.9em; height: 1.9em; display: grid; place-items: center;
+  font: 800 1.3em/1 var(--font-display); color: #fff; text-shadow: 0 1px 0 #000;
+}
+.c-pow { left: 0.25em; background: radial-gradient(circle at 35% 30%, #ffb27a, var(--pow) 55%, #8a3a00); clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); }
+.c-int { right: 0.25em; background: radial-gradient(circle at 35% 30%, #a8d4ff, var(--int) 55%, #0f3d70); border-radius: 0.3em 0.3em 50% 50%; }
+.c-beats { position: absolute; bottom: 0.7em; left: 50%; transform: translateX(-50%); font: 700 0.6em var(--font-display); padding: 0.15em 0.5em; border-radius: 99px; background: var(--dc); color: #111; white-space: nowrap; opacity: 0.9; }
+.c-count { position: absolute; right: -6px; top: -8px; z-index: 4; font: 800 13px/1 var(--font-display); padding: 4px 7px; border-radius: 99px; background: #fff; color: #102026; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+.c-foil-label {
+  position: absolute; left: 0; right: 0; top: 42%; z-index: 3; transform: translateY(-50%);
+  font: 900 0.62em/1.5 var(--font-display); letter-spacing: 0.06em; text-align: center; color: #fff;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.75) 20%, rgba(0, 0, 0, 0.75) 80%, transparent);
+}
+.card.is-dim { filter: grayscale(0.9) brightness(0.55); }
+/* Units need room at the bottom for the Power/Integrity badges */
+.t-unit .c-flavor { margin: auto 3.4em 4.3em; } /* em here = the small flavor font */
+.t-unit .c-text { margin-bottom: 0.3em; }
+.card.is-junk .c-frame { background: repeating-linear-gradient(-30deg, #b9ad92 0 4px, #a59a80 4px 8px); }
+
+/* ---------- rarity treatments ---------- */
+.card.r-uncommon { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--rc); }
+.card.r-rare { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--rc), 0 0 14px rgba(63, 167, 255, 0.45); }
+.card.r-epic { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--rc), 0 0 22px rgba(176, 108, 255, 0.55); }
+.card.r-legendary {
+  background: linear-gradient(115deg, #7a4a00, #ffd76a 30%, #ffb000 45%, #fff2c4 55%, #b37400 75%, #ffcf4a);
+  background-size: 250% 100%;
+  animation: gold-sheen 4s ease-in-out infinite;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5), 0 0 26px rgba(255, 176, 0, 0.6);
+}
+.card.r-brilliant {
+  background: var(--oil-slick);
+  animation: spin 4s linear infinite;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55), 0 0 34px rgba(255, 43, 214, 0.6), 0 0 60px rgba(255, 106, 19, 0.35);
+}
+.card.r-brilliant .c-frame { background: linear-gradient(180deg, #1a1210, #0b0706 60%); color: #fff; }
+.card.r-brilliant .c-name { color: transparent; background: var(--oil-slick); -webkit-background-clip: text; background-clip: text; }
+.card.r-brilliant .c-type, .card.r-brilliant .c-text { color: #e8dccf; }
+.card.r-brilliant .c-flavor { color: #b8a594; }
+.card.r-brilliant .c-art::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; mix-blend-mode: color-dodge; pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 45%, transparent 60%) -100% 0 / 250% 100% no-repeat;
+  animation: glint 2.6s ease-in-out infinite;
+}
+@keyframes gold-sheen { 50% { background-position: 100% 0; } }
+@keyframes glint { 60%, 100% { background-position: 150% 0; } }
+
+/* ---------- power-ups: UNO-style rainbow frame ---------- */
+.card.is-powerup { background: conic-gradient(from 210deg, #ff3b3b, #ffd23f, #4fd18b, #3fa7ff, #b06cff, #ff3b3b); }
+.card.is-powerup .c-cost { border-color: #fff; }
+
+/* =====================================================================
+   CSS-drawn card art. Two layers (.art-a, .art-b) + a glyph per card.
+   data-v (0–3) varies the composition so cards of one discipline differ.
+   ===================================================================== */
+.c-art { position: relative; overflow: hidden; margin: 0; background: var(--dc2); isolation: isolate; flex: 0 0 42%; }
+.unit .c-art { flex: none; }
+.art-layer { position: absolute; inset: 0; }
+.c-glyph {
+  position: absolute; z-index: 2; right: 0.4em; bottom: 0.3em;
+  font: 900 1.6em/1 var(--font-display); color: rgba(255, 255, 255, 0.9); letter-spacing: -0.02em;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45), 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.c-art[data-v="1"] .art-a { transform: scaleX(-1); }
+.c-art[data-v="2"] { filter: hue-rotate(-12deg) saturate(1.15); }
+.c-art[data-v="3"] .art-a { transform: scale(1.15) translateY(4%); }
+.c-art[data-v="3"] .c-glyph { left: 0.4em; right: auto; }
+
+/* Drilling: derrick against a sunset over the sea */
+.art-drilling { background: linear-gradient(180deg, #ffcf8a, #ff8a3d 45%, #7a2a00 70%, #1a3540 71%, #0f2a33); }
+.art-drilling .art-a {
+  left: 24%; right: 24%; top: 6%; bottom: 29%;
+  background:
+    linear-gradient(#2a1a10, #2a1a10) 50% 0 / 30% 5% no-repeat,
+    repeating-linear-gradient(0deg, #2a1a10 0 2px, transparent 2px 13%),
+    repeating-linear-gradient(60deg, transparent 0 7px, #2a1a10 7px 9px),
+    repeating-linear-gradient(-60deg, transparent 0 7px, #2a1a10 7px 9px);
+  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+}
+.art-drilling .art-b { top: 70%; background: linear-gradient(90deg, transparent 15%, #2a1a10 15% 85%, transparent 85%) 0 0 / 100% 12% no-repeat; }
+
+/* Geoscience: tilted strata with a fault */
+.art-geoscience {
+  background: repeating-linear-gradient(-12deg, #c8a874 0 12%, #8b6b47 12% 22%, #5c4a3a 22% 30%, #d9c49a 30% 40%, #6e5a44 40% 48%);
+}
+.art-geoscience .art-a {
+  left: 52%;
+  background: repeating-linear-gradient(-12deg, #c8a874 0 12%, #8b6b47 12% 22%, #5c4a3a 22% 30%, #d9c49a 30% 40%, #6e5a44 40% 48%);
+  transform: translateY(-14%);
+  border-left: 3px solid #2a1a10;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+}
+.art-geoscience .art-b { background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.25), transparent 30%); }
+
+/* Reservoir: oil-filled sand grains */
+.art-reservoir {
+  background:
+    radial-gradient(circle at 20% 30%, #f3d27a 0 9%, transparent 10%),
+    radial-gradient(circle at 55% 22%, #f3d27a 0 11%, transparent 12%),
+    radial-gradient(circle at 82% 40%, #f3d27a 0 8%, transparent 9%),
+    radial-gradient(circle at 35% 65%, #f3d27a 0 12%, transparent 13%),
+    radial-gradient(circle at 70% 75%, #f3d27a 0 10%, transparent 11%),
+    radial-gradient(circle at 10% 85%, #f3d27a 0 7%, transparent 8%),
+    linear-gradient(160deg, #7a4a00, #2a1600);
+}
+.art-reservoir .art-a {
+  left: 38%; top: 20%; width: 30%; height: 44%;
+  background: radial-gradient(circle at 35% 35%, #4a3a2a, #000 70%);
+  border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+  box-shadow: 0 0 18px rgba(255, 200, 80, 0.5);
+}
+.art-reservoir .art-b { background: radial-gradient(circle at 50% 120%, rgba(255, 176, 0, 0.45), transparent 60%); }
+
+/* Production: Christmas tree valves on green */
+.art-production { background: linear-gradient(180deg, #8fd9b0, #2fa36b 60%, #0d3a22); }
+.art-production .art-a {
+  left: 30%; right: 30%; top: 8%; bottom: 0;
+  background:
+    linear-gradient(#e64a3b, #e64a3b) 50% 18% / 46% 10% no-repeat,
+    linear-gradient(#e64a3b, #e64a3b) 50% 44% / 46% 10% no-repeat,
+    linear-gradient(#cfd8dc, #cfd8dc) 0 62% / 100% 12% no-repeat,
+    linear-gradient(#8a9ba1, #cfd8dc 50%, #8a9ba1) 50% 0 / 34% 100% no-repeat;
+}
+.art-production .art-b { background: linear-gradient(90deg, #cfd8dc, #8a9ba1) 0 62% / 30% 6% no-repeat, linear-gradient(90deg, #8a9ba1, #cfd8dc) 100% 62% / 30% 6% no-repeat; }
+
+/* Completions: casing with perforation tunnels */
+.art-completions { background: linear-gradient(90deg, #0f2a4f, #3c7fd6 50%, #0f2a4f); }
+.art-completions .art-a {
+  left: 40%; right: 40%;
+  background:
+    linear-gradient(90deg, #cfd8dc 0 14%, transparent 14% 86%, #cfd8dc 86%),
+    linear-gradient(#1a2a35, #1a2a35);
+}
+.art-completions .art-b {
+  background:
+    radial-gradient(ellipse 14% 4% at 30% 25%, #ffd76a, transparent),
+    radial-gradient(ellipse 14% 4% at 70% 40%, #ffd76a, transparent),
+    radial-gradient(ellipse 14% 4% at 30% 55%, #ffd76a, transparent),
+    radial-gradient(ellipse 14% 4% at 70% 70%, #ffd76a, transparent),
+    radial-gradient(ellipse 14% 4% at 30% 85%, #ffd76a, transparent);
+}
+
+/* HSE: hazard diamond and stripes */
+.art-hse { background: repeating-linear-gradient(45deg, #f2c200 0 14px, #1a1a1a 14px 28px); }
+.art-hse .art-a { inset: 14% 28%; background: #fff; transform: rotate(45deg) scale(0.8); border: 5px solid #c2283a; }
+.art-hse .art-b { inset: 30% 45%; background: linear-gradient(#c2283a, #c2283a) 50% 0 / 100% 62% no-repeat, radial-gradient(circle, #c2283a 45%, transparent 50%) 50% 100% / 100% 26% no-repeat; }
+
+/* Economics: candlestick chart going up */
+.art-economics { background: linear-gradient(180deg, #2a1557, #120830); }
+.art-economics .art-a {
+  inset: 12% 8% 10%;
+  background:
+    linear-gradient(#4fd18b, #4fd18b) 8% 100% / 10% 30% no-repeat,
+    linear-gradient(#ff5a5a, #ff5a5a) 30% 100% / 10% 22% no-repeat,
+    linear-gradient(#4fd18b, #4fd18b) 52% 100% / 10% 50% no-repeat,
+    linear-gradient(#4fd18b, #4fd18b) 74% 100% / 10% 66% no-repeat,
+    linear-gradient(#4fd18b, #4fd18b) 96% 100% / 10% 92% no-repeat,
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 20%);
+}
+.art-economics .art-b { background: linear-gradient(135deg, transparent 48%, rgba(255, 255, 255, 0.5) 49% 51%, transparent 52%) 0 0 / 100% 100%; opacity: 0.5; }
+
+/* Wildcat power-ups: swirling rainbow */
+.art-wildcat, .art-powerup { background: conic-gradient(from var(--spin), #ff3b3b, #ffd23f, #4fd18b, #3fa7ff, #b06cff, #ff3b3b); animation: spin 6s linear infinite; }
+.art-wildcat .art-a { inset: 18%; border-radius: 50%; background: radial-gradient(circle, #fff 0 30%, rgba(255, 255, 255, 0.2) 60%, transparent 70%); }
+.art-wildcat .c-glyph { right: 0; left: 0; bottom: 30%; text-align: center; font-size: 2.4em; color: #fff; }
+
+/* Hazard: storm and lightning */
+.art-hazard { background: radial-gradient(circle at 30% 20%, #6b1520, #1a0508 70%); }
+.art-hazard .art-a {
+  left: 38%; right: 30%; top: 4%; bottom: 8%;
+  background: linear-gradient(#ffe066, #ff8a3d);
+  clip-path: polygon(40% 0, 100% 0, 60% 40%, 90% 40%, 20% 100%, 40% 52%, 10% 52%);
+  filter: drop-shadow(0 0 6px #ffd23f);
+}
+.art-hazard .art-b { background: repeating-linear-gradient(100deg, transparent 0 10px, rgba(200, 220, 235, 0.15) 10px 11px); }
+
+/* ---------- card back ---------- */
+.card-back {
+  width: 46px; aspect-ratio: 5 / 7; border-radius: 5px; flex: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 106, 19, 0.5), transparent 60%),
+    repeating-linear-gradient(45deg, #1d3a43 0 5px, #13282f 5px 10px);
+  border: 2px solid #48737e; display: grid; place-items: center; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+.back-logo { font: 900 12px var(--font-display); color: var(--drilling); }
+
+/* =====================================================================
+   Board units
+   ===================================================================== */
+.unit {
+  --w: 104px;
+  position: relative; width: var(--w); height: calc(var(--w) * 1.22); flex: none;
+  border-radius: 46% 46% 14px 14px / 34% 34% 14px 14px;
+  background: linear-gradient(170deg, color-mix(in srgb, var(--dc) 80%, #fff), var(--dc) 45%, var(--dc2));
+  padding: 4px; cursor: pointer; user-select: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--rc);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, filter 0.2s;
+}
+.unit .c-art { position: absolute; inset: 4px 4px 28px; border-radius: 44% 44% 8px 8px / 32% 32% 8px 8px; }
+.unit .c-glyph { font-size: 20px; }
+.u-name {
+  position: absolute; left: 4px; right: 4px; bottom: 4px; height: 22px; z-index: 2;
+  display: grid; place-items: center; overflow: hidden;
+  font: 700 10px/1 var(--font-display); color: #10181b; background: rgba(255, 255, 255, 0.92); border-radius: 0 0 10px 10px;
+  text-align: center; padding: 0 22px; white-space: nowrap; text-overflow: ellipsis;
+}
+.u-pow, .u-int {
+  position: absolute; bottom: -6px; z-index: 3; width: 30px; height: 30px; display: grid; place-items: center;
+  font: 800 17px/1 var(--font-display); color: #fff; text-shadow: 0 1px 0 #000;
+  transition: transform 0.2s;
+}
+.u-pow { left: -8px; background: radial-gradient(circle at 35% 30%, #ffb27a, var(--pow) 55%, #8a3a00); clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); }
+.u-int { right: -8px; background: radial-gradient(circle at 35% 30%, #a8d4ff, var(--int) 55%, #0f3d70); border-radius: 6px 6px 50% 50%; }
+.u-pow.up, .u-int.up { color: #b6ffcf; }
+.u-pow.down, .u-int.down { color: #ffb4b4; }
+.u-badges { position: absolute; left: 0; right: 0; top: -10px; z-index: 3; display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; }
+.badge { font: 700 9px/1 var(--font-display); padding: 3px 5px; border-radius: 99px; background: #13282f; border: 1px solid #48737e; color: #fff; }
+.b-stuck { background: #5a1b22; border-color: #ff7a85; }
+.b-h2s { background: #4a5200; border-color: #d8e05a; }
+.b-spud { background: #7a2a00; } .b-dual { background: #6a0f1f; } .b-fracture { background: #3d1a6b; }
+.b-recovery { background: #134a2c; } .b-waterflood { background: #0f4a52; } .b-sour { background: #4a5200; }
+/* Keywords shown as frame treatments */
+.unit.k-casing { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--rc), 0 0 0 6px #5d6b70, 0 0 0 8px #2a3438; border-radius: 14px; }
+.unit.k-casing .c-art { border-radius: 10px 10px 6px 6px; }
+.unit.k-bop::before {
+  content: ""; position: absolute; inset: -8px; z-index: 4; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.35), rgba(95, 179, 255, 0.18) 45%, rgba(95, 179, 255, 0.35) 70%);
+  border: 2px solid rgba(160, 210, 255, 0.85); box-shadow: 0 0 14px rgba(95, 179, 255, 0.7);
+}
+.unit.s-stuck { filter: grayscale(0.6) brightness(0.8); }
+.unit.s-stuck::after { content: ""; position: absolute; inset: 20% -4px auto; height: 10px; z-index: 4; background: repeating-linear-gradient(45deg, #2a3438 0 6px, #cfd8dc 6px 12px); transform: rotate(-12deg); border-radius: 3px; }
+.unit.s-sour .c-art { box-shadow: inset 0 0 18px #c6d42a; }

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Strict CSP: own scripts/styles only. The only network access allowed is
+       Firebase Auth + Firestore REST, used by the optional leaderboard. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'none'; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'none'; worker-src 'none'">
+  <meta name="referrer" content="strict-origin">
+  <meta name="description" content="Wellbore Wars: a 1v1 petroleum engineering trading card game. You, the engineer, against the Environment.">
+  <meta name="color-scheme" content="dark">
+  <title>Wellbore Wars</title>
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/cards.css">
+  <link rel="stylesheet" href="./css/board.css">
+  <link rel="stylesheet" href="./css/screens.css">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Top navigation (hidden during battles) -->
+  <header class="topnav" id="topnav">
+    <a class="brand" href="#/menu" aria-label="Wellbore Wars — main menu">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-word">Wellbore <b>Wars</b></span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#/play" data-nav="play">Play</a></li>
+        <li><a href="#/collection" data-nav="collection">Collection</a></li>
+        <li><a href="#/deck" data-nav="deck">Deck builder</a></li>
+        <li><a href="#/packs" data-nav="packs">Packs <span class="pill" id="nav-packs">0</span></a></li>
+        <li><a href="#/records" data-nav="records">Records</a></li>
+        <li><a href="#/leaderboard" data-nav="leaderboard">Leaderboard</a></li>
+        <li><a href="#/rules" data-nav="rules">How to play</a></li>
+        <li><a href="#/settings" data-nav="settings">Settings</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="icon-btn" id="sound-toggle" aria-pressed="true" title="Sound on/off">♪</button>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================== MAIN MENU ============================== -->
+    <section class="screen screen-menu" id="screen-menu" aria-labelledby="menu-title">
+      <div class="menu-scene" aria-hidden="true">
+        <div class="ms-sky"></div><div class="ms-sea"></div>
+        <div class="ms-rig"><span class="ms-derrick"></span><span class="ms-deck"></span><span class="ms-flare"></span></div>
+        <div class="ms-strata"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="menu-panel">
+        <p class="menu-kicker">A petroleum engineering card game</p>
+        <h1 class="menu-title" id="menu-title">Wellbore <span>Wars</span></h1>
+        <p class="menu-sub">You are the engineer. The Environment is your opponent. Build a deck from seven disciplines and bring the well under control.</p>
+        <div class="menu-actions">
+          <a class="btn btn-primary btn-xl" href="#/play">Play</a>
+          <a class="btn" href="#/collection">Collection</a>
+          <a class="btn" href="#/deck">Deck builder</a>
+          <a class="btn" href="#/packs">Open packs <span class="pill" id="menu-packs">0</span></a>
+          <a class="btn" href="#/rules">How to play</a>
+          <a class="btn" href="#/settings">Settings</a>
+        </div>
+        <p class="menu-profile" id="menu-profile"></p>
+      </div>
+    </section>
+
+    <!-- ============================== MATCH SETUP ============================== -->
+    <section class="screen screen-play" id="screen-play" aria-labelledby="play-title">
+      <div class="wrap">
+        <h1 id="play-title">New match</h1>
+        <h2 class="step"><span>1</span> Choose your deck</h2>
+        <div class="choice-grid" id="play-decks" role="radiogroup" aria-label="Deck"></div>
+        <h2 class="step"><span>2</span> Choose your opponent</h2>
+        <div class="choice-grid" id="play-bosses" role="radiogroup" aria-label="Opponent"></div>
+        <h2 class="step"><span>3</span> Difficulty</h2>
+        <div class="seg" id="play-difficulty" role="radiogroup" aria-label="Difficulty"></div>
+        <p class="hint" id="play-difficulty-hint"></p>
+        <div class="play-start">
+          <p class="warn" id="play-warn"></p>
+          <button type="button" class="btn btn-primary btn-xl" id="play-start">Start match</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== BATTLE ============================== -->
+    <section class="screen screen-battle" id="screen-battle" aria-label="Battle">
+      <div class="board-bg" aria-hidden="true"></div>
+
+      <header class="hud hud-enemy">
+        <div class="portrait" id="b-enemy-portrait" tabindex="0" role="button" aria-label="Enemy Well">
+          <span class="p-art" aria-hidden="true"></span>
+          <span class="p-hp"><span id="b-enemy-hp">25</span></span>
+          <span class="p-hpbar" id="b-enemy-hpbar" aria-hidden="true"></span>
+        </div>
+        <div class="hud-info">
+          <strong id="b-enemy-name">Environment</strong>
+          <span class="hud-title" id="b-enemy-title"></span>
+          <span class="hud-power" id="b-enemy-power"></span>
+          <span class="hud-flags" id="b-enemy-flags"></span>
+        </div>
+        <div class="hud-budget" aria-label="Enemy Budget"><span class="gems" id="b-enemy-budget"></span><span class="budget-text" id="b-enemy-budget-text"></span></div>
+        <div class="hud-deck" title="Cards left in deck"><span class="deck-pile" aria-hidden="true"></span><span id="b-enemy-deck">20</span></div>
+        <div class="enemy-hand" id="b-enemy-hand" aria-label="Enemy hand"></div>
+        <p class="bubble" id="b-bubble" role="status" aria-live="polite"></p>
+      </header>
+
+      <div class="board">
+        <div class="lane lane-enemy" id="b-enemy-lane" aria-label="Enemy units"></div>
+        <div class="midline">
+          <div class="field-slot" id="b-field" aria-label="Field card"><span class="field-empty">No field</span></div>
+          <p class="hint-line" id="b-hint" aria-live="polite"></p>
+          <button type="button" class="btn btn-small" id="b-log-toggle">Log</button>
+        </div>
+        <div class="lane lane-player" id="b-player-lane" aria-label="Your units"></div>
+      </div>
+
+      <footer class="hud hud-player">
+        <div class="portrait" id="b-player-portrait" tabindex="0" role="button" aria-label="Your Well">
+          <span class="p-art" aria-hidden="true"></span>
+          <span class="p-hp"><span id="b-player-hp">25</span></span>
+          <span class="p-hpbar" id="b-player-hpbar" aria-hidden="true"></span>
+        </div>
+        <div class="hud-info">
+          <strong id="b-player-name">You</strong>
+          <span class="hud-title" id="b-player-title"></span>
+          <span class="hud-flags" id="b-player-flags"></span>
+        </div>
+        <div class="hud-budget" aria-label="Your Budget"><span class="gems" id="b-player-budget"></span><span class="budget-text" id="b-player-budget-text"></span></div>
+        <div class="hud-deck" title="Cards left in deck"><span class="deck-pile" aria-hidden="true"></span><span id="b-player-deck">20</span></div>
+        <button type="button" class="power-btn" id="b-power"><strong id="b-power-name">Power</strong><span id="b-power-text"></span></button>
+        <button type="button" class="btn btn-primary end-btn" id="b-end">End turn</button>
+        <button type="button" class="icon-btn menu-btn" id="b-menu" aria-label="Pause menu">❚❚</button>
+      </footer>
+
+      <div class="hand" id="b-hand" aria-label="Your hand"></div>
+      <aside class="battle-log" aria-label="Battle log"><div class="log-head"><h2>Log</h2><button type="button" class="btn btn-small" id="b-log-close">Close</button></div><ol id="b-log"></ol></aside>
+      <div class="reveal" id="b-reveal" aria-live="polite"></div>
+      <p class="banner" id="b-banner" role="status" aria-live="assertive"></p>
+      <div class="fx" id="b-fx" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============================== COLLECTION ============================== -->
+    <section class="screen screen-collection" id="screen-collection" aria-labelledby="col-title">
+      <div class="wrap">
+        <div class="screen-head">
+          <h1 id="col-title">Collection</h1>
+          <p class="hint" id="col-progress"></p>
+        </div>
+        <div class="filters" role="group" aria-label="Filters">
+          <label class="search"><span class="sr">Search</span><input type="search" id="col-search" placeholder="Search cards…" autocomplete="off"></label>
+          <div class="chips" id="col-discs" aria-label="Discipline"></div>
+          <div class="chips" id="col-rarities" aria-label="Rarity"></div>
+          <label class="toggle"><input type="checkbox" id="col-owned"> Owned only</label>
+        </div>
+        <div class="card-grid" id="col-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============================== DECK BUILDER ============================== -->
+    <section class="screen screen-deck" id="screen-deck" aria-labelledby="deck-title">
+      <div class="wrap deck-wrap">
+        <div class="screen-head">
+          <h1 id="deck-title">Deck builder</h1>
+          <p class="hint">Exactly 20 cards. Up to 2 copies of a card, 1 of each Legendary or Blowout Brilliant. Click a card to add it; click it in your deck to remove it.</p>
+        </div>
+        <div class="deck-layout">
+          <div class="deck-pool">
+            <div class="filters">
+              <label class="search"><span class="sr">Search</span><input type="search" id="deck-search" placeholder="Search your cards…" autocomplete="off"></label>
+              <div class="chips" id="deck-discs" aria-label="Discipline"></div>
+            </div>
+            <div class="card-grid small" id="deck-pool"></div>
+          </div>
+          <aside class="deck-list" aria-label="Your deck">
+            <label class="field">Commander
+              <select id="deck-commander"></select>
+            </label>
+            <p class="hint" id="deck-commander-text"></p>
+            <div class="curve" id="deck-curve" aria-label="Cost curve"></div>
+            <h2><span id="deck-count">0</span>/20 cards</h2>
+            <ol class="deck-rows" id="deck-rows"></ol>
+            <p class="warn" id="deck-problems"></p>
+            <div class="deck-actions">
+              <label class="field">Start from
+                <select id="deck-template">
+                  <option value="">—</option>
+                  <option value="drill-crew">Drill Crew</option>
+                  <option value="reservoir-team">Reservoir Team</option>
+                  <option value="production-ops">Production Ops</option>
+                </select>
+              </label>
+              <button type="button" class="btn" id="deck-clear">Clear</button>
+              <button type="button" class="btn btn-primary" id="deck-save">Save deck</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== PACKS ============================== -->
+    <section class="screen screen-packs" id="screen-packs" aria-labelledby="packs-title">
+      <div class="wrap">
+        <div class="screen-head">
+          <h1 id="packs-title">Core sample packs</h1>
+          <p class="hint">Win matches to earn packs (2 per win on Senior). Each pack holds 5 cards; the last card is always Rare or better.</p>
+        </div>
+        <div class="pack-stage" id="pack-stage">
+          <button type="button" class="pack" id="pack-open" aria-label="Open a pack">
+            <span class="pack-face"><span class="pack-logo">WW</span><span class="pack-name">Core Sample</span><span class="pack-count" id="pack-count">×0</span></span>
+          </button>
+          <div class="pack-results" id="pack-results" aria-live="polite"></div>
+        </div>
+        <table class="odds">
+          <caption>Published odds per card (slots 1–4)</caption>
+          <tbody id="pack-odds"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================== RECORDS ============================== -->
+    <section class="screen screen-records" id="screen-records" aria-labelledby="rec-title">
+      <div class="wrap">
+        <h1 id="rec-title">Records</h1>
+        <div class="stat-grid" id="rec-stats"></div>
+        <h2>Bosses</h2>
+        <div class="boss-records" id="rec-bosses"></div>
+        <h2>Achievements</h2>
+        <ul class="ach-grid" id="rec-ach"></ul>
+      </div>
+    </section>
+
+    <!-- ============================== LEADERBOARD ============================== -->
+    <section class="screen screen-leaderboard" id="screen-leaderboard" aria-labelledby="lb-title">
+      <div class="wrap narrow">
+        <h1 id="lb-title">Global leaderboard</h1>
+        <p class="hint" id="lb-status"></p>
+        <table class="lb-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Engineer</th><th scope="col">Wins</th><th scope="col">Losses</th></tr></thead>
+          <tbody id="lb-rows"></tbody>
+        </table>
+        <button type="button" class="btn" id="lb-refresh">Refresh</button>
+      </div>
+    </section>
+
+    <!-- ============================== HOW TO PLAY ============================== -->
+    <section class="screen screen-rules" id="screen-rules" aria-labelledby="rules-title">
+      <div class="wrap narrow rules">
+        <h1 id="rules-title">How to play</h1>
+
+        <h2>Goal</h2>
+        <p>Each side has a <strong>Well</strong> with 25 Integrity (bosses have 20, 25 or 30 depending on difficulty). Bring the enemy Well to 0 before they do the same to yours.</p>
+
+        <h2>Your turn</h2>
+        <ol>
+          <li>You gain <strong>+1 max Budget</strong> (up to 10), refill your Budget, and draw a card.</li>
+          <li><strong>Play cards</strong> by paying their Budget cost (top-left number). Click a card; if it needs a target, click one.</li>
+          <li><strong>Attack</strong>: click a ready unit (it glows), then click an enemy unit or the enemy Well. Units can't attack on the turn they arrive unless they have <em>Spud</em>.</li>
+          <li>Use your <strong>Commander power</strong> once per turn for 2 Budget.</li>
+          <li>Press <strong>End turn</strong> (or the E key).</li>
+        </ol>
+
+        <h2>Card types</h2>
+        <dl class="types">
+          <dt>Unit</dt><dd>Crew and equipment that stay on the board. <b class="pow-i">Power</b> is the damage it deals; <b class="int-i">Integrity</b> is how much damage it can take. Combat is simultaneous: both units deal their Power to each other.</dd>
+          <dt>Operation</dt><dd>One-time effects: damage, healing, card draw.</dd>
+          <dt>Field</dt><dd>A rule change that stays in play for both players until another Field replaces it.</dd>
+          <dt>Power-up</dt><dd>Wildcat cards inspired by UNO: <em>Reverse</em> swaps a unit's Power and Integrity, <em>Skip</em> stops enemy attacks next turn, <em>+2</em> clogs their hand with Cuttings, and <em>Wild</em> draws and discounts your next card.</dd>
+        </dl>
+
+        <h2>Card text</h2>
+        <p><strong>Rig-Up:</strong> happens when the unit is played. <strong>P&amp;A:</strong> happens when it is destroyed. <strong>Stuck:</strong> can't attack next turn. <strong>H₂S:</strong> takes 1 damage at the start of its turn, twice.</p>
+
+        <h2>Keywords</h2>
+        <dl class="keyword-list" id="rules-keywords"></dl>
+
+        <h2>The discipline wheel</h2>
+        <p>Each discipline deals <strong>+1 damage</strong> in combat to the next one on the wheel. HSE and Economics sit outside it.</p>
+        <ol class="wheel" aria-label="Discipline wheel">
+          <li class="d-drilling">Drilling cuts through Geoscience</li>
+          <li class="d-geoscience">Geoscience characterises the Reservoir</li>
+          <li class="d-reservoir">Reservoir pressure drives Production</li>
+          <li class="d-production">Production outlasts Completions</li>
+          <li class="d-completions">Completions finish what Drilling started</li>
+        </ol>
+
+        <h2>Rarities</h2>
+        <ul class="rarity-list">
+          <li class="r-common">Common</li><li class="r-uncommon">Uncommon</li><li class="r-rare">Rare</li>
+          <li class="r-epic">Epic</li><li class="r-legendary">Legendary</li><li class="r-brilliant">Blowout Brilliant</li>
+        </ul>
+
+        <h2>Other rules</h2>
+        <ul>
+          <li>Max 6 units on your board and 8 cards in hand (extra draws are burned).</li>
+          <li>Going second? You get an extra card and a <em>Spare Budget</em>.</li>
+          <li>Out of cards: you take increasing fatigue damage each draw.</li>
+          <li>Every boss has a passive that triggers every few turns. Read it on their portrait.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== SETTINGS ============================== -->
+    <section class="screen screen-settings" id="screen-settings" aria-labelledby="set-title">
+      <div class="wrap narrow">
+        <h1 id="set-title">Settings</h1>
+        <form class="settings" id="settings-form" autocomplete="off">
+          <fieldset>
+            <legend>Profile</legend>
+            <label class="field">Engineer name (2–16 letters, numbers, spaces)
+              <input type="text" id="set-name" maxlength="16" minlength="2" pattern="[A-Za-z0-9 _.\-]{2,16}" required>
+            </label>
+          </fieldset>
+          <fieldset>
+            <legend>Sound</legend>
+            <label class="toggle"><input type="checkbox" id="set-sfx-on"> Sound effects</label>
+            <label class="field">Effects volume <input type="range" id="set-sfx" min="0" max="1" step="0.05"></label>
+            <label class="toggle"><input type="checkbox" id="set-music-on"> Music</label>
+            <label class="field">Music volume <input type="range" id="set-music" min="0" max="1" step="0.05"></label>
+            <label class="field">Master volume <input type="range" id="set-master" min="0" max="1" step="0.05"></label>
+          </fieldset>
+          <fieldset>
+            <legend>Gameplay</legend>
+            <label class="field">Animation speed
+              <select id="set-speed"><option value="slow">Slow</option><option value="normal">Normal</option><option value="fast">Fast</option></select>
+            </label>
+            <label class="toggle"><input type="checkbox" id="set-reduced"> Reduce motion</label>
+            <label class="toggle"><input type="checkbox" id="set-tutorial"> Show tutorial tips again</label>
+          </fieldset>
+          <fieldset>
+            <legend>Global leaderboard</legend>
+            <label class="toggle"><input type="checkbox" id="set-cloud"> Send my wins and losses (and my engineer name) to the global leaderboard</label>
+            <p class="hint" id="set-cloud-status"></p>
+          </fieldset>
+          <fieldset>
+            <legend>Danger zone</legend>
+            <button type="button" class="btn btn-danger" id="set-reset">Reset all progress</button>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared overlays -->
+  <dialog class="modal" id="modal" aria-labelledby="modal-title"></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="achv" id="achv" role="status" aria-live="polite"></div>
+  <aside class="coach" id="coach" role="note" aria-live="polite"></aside>
+
+  <noscript><p class="noscript">Wellbore Wars needs JavaScript for the game rules. All visuals are CSS.</p></noscript>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

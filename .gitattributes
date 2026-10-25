@@ -1,2 +1,7 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+* text=auto eol=lf
+*.png binary
+
+# Dev tooling (tests, local server, security scanner) is not part of the game
+# that ships to the browser, so leave it out of GitHub's language statistics.
+scripts/** linguist-detectable=false
+tests/** linguist-detectable=false

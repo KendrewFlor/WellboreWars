@@ -1,0 +1,20 @@
+{
+  "name": "wellbore-wars",
+  "version": "1.0.0",
+  "description": "Wellbore Wars \u2014 a 1v1 petroleum engineering trading card game. You, the engineer, against the Environment. CSS visuals, zero dependencies, optional Firestore leaderboard.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "Kendrew Flor S. Arrabe",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "scan": "node scripts/security-scan.mjs",
+    "check": "node scripts/security-scan.mjs && node --test tests/*.test.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

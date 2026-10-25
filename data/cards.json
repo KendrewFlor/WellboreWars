@@ -1,0 +1,2029 @@
+{
+  "disciplines": {
+    "drilling": {
+      "label": "Drilling",
+      "beats": "geoscience",
+      "blurb": "Makes hole. Fast, hard-hitting crews and heavy iron."
+    },
+    "geoscience": {
+      "label": "Geoscience",
+      "beats": "reservoir",
+      "blurb": "Reads the rock. Area damage and walls of salt."
+    },
+    "reservoir": {
+      "label": "Reservoir",
+      "beats": "production",
+      "blurb": "Understands the fluids. Card draw, healing and giant fields."
+    },
+    "production": {
+      "label": "Production",
+      "beats": "completions",
+      "blurb": "Keeps barrels flowing. Steady damage and sturdy surface kit."
+    },
+    "completions": {
+      "label": "Completions",
+      "beats": "drilling",
+      "blurb": "Connects well to rock. Burst damage and Fracture."
+    },
+    "hse": {
+      "label": "HSE",
+      "beats": null,
+      "blurb": "Keeps everyone alive. Shields, Casing and stop-work calls."
+    },
+    "economics": {
+      "label": "Economics",
+      "beats": null,
+      "blurb": "Follows the money. Discounts, Budget and steady income."
+    },
+    "wildcat": {
+      "label": "Wildcat",
+      "beats": null,
+      "blurb": "Power-ups that bend the rules."
+    },
+    "hazard": {
+      "label": "Hazard",
+      "beats": null,
+      "blurb": "The Environment's own cards."
+    }
+  },
+  "rarities": [
+    {
+      "id": "common",
+      "label": "Common",
+      "packOdds": 0.6
+    },
+    {
+      "id": "uncommon",
+      "label": "Uncommon",
+      "packOdds": 0.25
+    },
+    {
+      "id": "rare",
+      "label": "Rare",
+      "packOdds": 0.1
+    },
+    {
+      "id": "epic",
+      "label": "Epic",
+      "packOdds": 0.04
+    },
+    {
+      "id": "legendary",
+      "label": "Legendary",
+      "packOdds": 0.009
+    },
+    {
+      "id": "brilliant",
+      "label": "Blowout Brilliant",
+      "packOdds": 0.001
+    }
+  ],
+  "keywords": {
+    "spud": {
+      "label": "Spud",
+      "text": "Can attack the turn it is played."
+    },
+    "casing": {
+      "label": "Casing",
+      "text": "Enemies must attack units with Casing first."
+    },
+    "bop": {
+      "label": "BOP",
+      "text": "Blocks the next damage this unit would take, then is used up."
+    },
+    "fracture": {
+      "label": "Fracture",
+      "text": "Excess damage dealt to a unit carries through to the enemy Well."
+    },
+    "recovery": {
+      "label": "Recovery",
+      "text": "Damage this unit deals restores your Well by the same amount."
+    },
+    "sour": {
+      "label": "Sour",
+      "text": "Units it damages are poisoned with H₂S: 1 damage at the start of their turn, twice."
+    },
+    "waterflood": {
+      "label": "Waterflood",
+      "text": "Restores 2 Integrity at the start of your turn."
+    },
+    "dual": {
+      "label": "Dual",
+      "text": "Can attack twice each turn."
+    }
+  },
+  "cards": [
+    {
+      "id": "roughneck",
+      "name": "Roughneck",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "integrity": 2,
+      "glyph": "RN",
+      "flavor": "First on the floor, last off the tower."
+    },
+    {
+      "id": "derrickhand",
+      "name": "Derrickhand",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "common",
+      "cost": 2,
+      "power": 3,
+      "integrity": 1,
+      "kw": [
+        "spud"
+      ],
+      "glyph": "DH",
+      "flavor": "Ninety feet up and still the first one moving."
+    },
+    {
+      "id": "mud-engineer",
+      "name": "Mud Engineer",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "uncommon",
+      "cost": 2,
+      "power": 2,
+      "integrity": 2,
+      "glyph": "ME",
+      "text": "Rig-Up: give a friendly unit BOP.",
+      "onPlay": {
+        "target": "friendlyUnit",
+        "effects": [
+          {
+            "op": "grant",
+            "keyword": "bop",
+            "to": "target"
+          }
+        ]
+      },
+      "flavor": "Weight up before the shale weights you."
+    },
+    {
+      "id": "pdc-bit",
+      "name": "PDC Bit",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 4,
+      "integrity": 2,
+      "kw": [
+        "fracture"
+      ],
+      "glyph": "PD",
+      "flavor": "Diamond cutters shear what tricones only crush."
+    },
+    {
+      "id": "directional-driller",
+      "name": "Directional Driller",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 2,
+      "integrity": 3,
+      "glyph": "DD",
+      "text": "Rig-Up: deal 2 damage to an enemy unit.",
+      "onPlay": {
+        "target": "enemyUnit",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 2,
+            "to": "target"
+          }
+        ]
+      },
+      "flavor": "Geosteering is just aiming with extra steps."
+    },
+    {
+      "id": "top-drive",
+      "name": "Top Drive",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "rare",
+      "cost": 4,
+      "power": 3,
+      "integrity": 4,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "TD",
+      "text": "Rig-Up: draw a card.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "draw",
+            "n": 1
+          }
+        ]
+      },
+      "flavor": "Rotates the string, and the conversation."
+    },
+    {
+      "id": "turbodrill",
+      "name": "Diamond Turbodrill",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 5,
+      "integrity": 4,
+      "kw": [
+        "dual"
+      ],
+      "glyph": "TB",
+      "flavor": "Mud-driven turbine. Grinds through anything twice."
+    },
+    {
+      "id": "toolpusher",
+      "name": "The Toolpusher",
+      "type": "unit",
+      "disc": "drilling",
+      "rarity": "legendary",
+      "cost": 6,
+      "power": 5,
+      "integrity": 6,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "TP",
+      "text": "Rig-Up: give your other units +1/+1.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "buff",
+            "power": 1,
+            "integrity": 1,
+            "to": "otherFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "\"Nobody goes home until we hit TD.\""
+    },
+    {
+      "id": "make-hole",
+      "name": "Make Hole",
+      "type": "operation",
+      "disc": "drilling",
+      "rarity": "common",
+      "cost": 1,
+      "glyph": "MH",
+      "text": "Deal 2 damage to an enemy unit.",
+      "target": "enemyUnit",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 2,
+          "to": "target"
+        }
+      ],
+      "flavor": "Feet per hour is the only metric."
+    },
+    {
+      "id": "kill-mud",
+      "name": "Kill Mud",
+      "type": "operation",
+      "disc": "drilling",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "KM",
+      "text": "Restore 5 to your Well.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "heal",
+          "amount": 5,
+          "to": "ownWell"
+        }
+      ],
+      "flavor": "KMW = OMW + SIDPP ÷ (0.052 × TVD). Round up."
+    },
+    {
+      "id": "sidetrack",
+      "name": "Sidetrack",
+      "type": "operation",
+      "disc": "drilling",
+      "rarity": "rare",
+      "cost": 3,
+      "glyph": "ST",
+      "text": "Return an enemy unit to its owner's hand.",
+      "target": "enemyUnit",
+      "effects": [
+        {
+          "op": "bounce",
+          "to": "target"
+        }
+      ],
+      "flavor": "If you can't go through it, go around it."
+    },
+    {
+      "id": "hpht-well",
+      "name": "HPHT Well",
+      "type": "field",
+      "disc": "drilling",
+      "rarity": "rare",
+      "cost": 3,
+      "glyph": "HP",
+      "text": "Field: Operations cost 1 more for both players.",
+      "field": "hpht",
+      "flavor": "15,000 psi and 350 °F. Everything is harder down here."
+    },
+    {
+      "id": "core-sample",
+      "name": "Core Sample",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "integrity": 1,
+      "glyph": "CS",
+      "text": "Rig-Up: draw a card.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "draw",
+            "n": 1
+          }
+        ]
+      },
+      "flavor": "Ninety feet of truth in a metal tube."
+    },
+    {
+      "id": "pvt-analyst",
+      "name": "PVT Analyst",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "common",
+      "cost": 2,
+      "power": 1,
+      "integrity": 3,
+      "kw": [
+        "recovery"
+      ],
+      "glyph": "PV",
+      "flavor": "Knows exactly when the bubbles start."
+    },
+    {
+      "id": "waterflood-injector",
+      "name": "Waterflood Injector",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 2,
+      "integrity": 4,
+      "kw": [
+        "waterflood"
+      ],
+      "glyph": "WI",
+      "flavor": "Five-spot pattern, endless patience."
+    },
+    {
+      "id": "reservoir-simulator",
+      "name": "Reservoir Simulator",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "rare",
+      "cost": 4,
+      "power": 3,
+      "integrity": 4,
+      "glyph": "RS",
+      "text": "Rig-Up: draw 2 cards.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "draw",
+            "n": 2
+          }
+        ]
+      },
+      "flavor": "A million grid blocks and one good history match."
+    },
+    {
+      "id": "gas-cap-drive",
+      "name": "Gas Cap Drive",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 4,
+      "integrity": 6,
+      "kw": [
+        "recovery",
+        "casing"
+      ],
+      "glyph": "GC",
+      "flavor": "Expanding from above, pushing every barrel down-dip."
+    },
+    {
+      "id": "supergiant-field",
+      "name": "Supergiant Field",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "legendary",
+      "cost": 8,
+      "power": 8,
+      "integrity": 8,
+      "glyph": "SG",
+      "text": "Rig-Up: restore 8 to your Well.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "heal",
+            "amount": 8,
+            "to": "ownWell"
+          }
+        ]
+      },
+      "flavor": "Five billion barrels and a century of plateau."
+    },
+    {
+      "id": "material-balance",
+      "name": "Material Balance",
+      "type": "operation",
+      "disc": "reservoir",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "MB",
+      "text": "Restore 3 Integrity to a friendly unit. Draw a card.",
+      "target": "friendlyUnit",
+      "effects": [
+        {
+          "op": "heal",
+          "amount": 3,
+          "to": "target"
+        },
+        {
+          "op": "draw",
+          "n": 1
+        }
+      ],
+      "flavor": "What goes in, minus what comes out."
+    },
+    {
+      "id": "history-match",
+      "name": "History Match",
+      "type": "operation",
+      "disc": "reservoir",
+      "rarity": "rare",
+      "cost": 2,
+      "glyph": "HM",
+      "text": "Draw 2 cards.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "draw",
+          "n": 2
+        }
+      ],
+      "flavor": "Tune the model until the past agrees."
+    },
+    {
+      "id": "co2-flood",
+      "name": "CO₂ Flood",
+      "type": "operation",
+      "disc": "reservoir",
+      "rarity": "epic",
+      "cost": 6,
+      "glyph": "CO",
+      "text": "Deal 3 damage to all enemy units.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 3,
+          "to": "allEnemyUnits"
+        }
+      ],
+      "flavor": "Miscible, merciless, and some of it stays underground."
+    },
+    {
+      "id": "gas-lift",
+      "name": "Gas Lift Mandrel",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "integrity": 2,
+      "glyph": "GL",
+      "text": "Rig-Up: give a friendly unit +1 Power.",
+      "onPlay": {
+        "target": "friendlyUnit",
+        "effects": [
+          {
+            "op": "buff",
+            "power": 1,
+            "integrity": 0,
+            "to": "target"
+          }
+        ]
+      },
+      "flavor": "Lighten the column, raise the rate."
+    },
+    {
+      "id": "lease-pumper",
+      "name": "Lease Pumper",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "common",
+      "cost": 2,
+      "power": 2,
+      "integrity": 3,
+      "glyph": "LP",
+      "flavor": "Two hundred wells, one pickup truck."
+    },
+    {
+      "id": "esp-pump",
+      "name": "ESP",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 3,
+      "integrity": 3,
+      "glyph": "EP",
+      "text": "At the start of your turn, deal 1 damage to the enemy Well.",
+      "onTurnStart": {
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "enemyWell"
+          }
+        ]
+      },
+      "flavor": "Electric submersible pump: never sleeps, never stops."
+    },
+    {
+      "id": "separator",
+      "name": "Three-Phase Separator",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 2,
+      "integrity": 4,
+      "glyph": "3P",
+      "text": "Rig-Up: restore 2 Integrity to all friendly units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "heal",
+            "amount": 2,
+            "to": "allFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "Oil, gas and water, politely asked to leave separately."
+    },
+    {
+      "id": "christmas-tree",
+      "name": "Christmas Tree",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "rare",
+      "cost": 4,
+      "power": 2,
+      "integrity": 6,
+      "kw": [
+        "casing",
+        "bop"
+      ],
+      "glyph": "XT",
+      "flavor": "Valves on valves. Nothing gets past."
+    },
+    {
+      "id": "fpso",
+      "name": "FPSO",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "legendary",
+      "cost": 7,
+      "power": 6,
+      "integrity": 7,
+      "kw": [
+        "recovery"
+      ],
+      "glyph": "FP",
+      "text": "Rig-Up: summon a 2/2 Shuttle Tanker.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "summon",
+            "card": "shuttle-tanker",
+            "n": 1
+          }
+        ]
+      },
+      "flavor": "A refinery's worth of steel, moored over the field."
+    },
+    {
+      "id": "shuttle-tanker",
+      "name": "Shuttle Tanker",
+      "type": "unit",
+      "disc": "production",
+      "rarity": "common",
+      "cost": 2,
+      "power": 2,
+      "integrity": 2,
+      "glyph": "SH",
+      "token": true,
+      "flavor": "Offloading every ten days, rain or shine."
+    },
+    {
+      "id": "debottleneck",
+      "name": "Debottleneck",
+      "type": "operation",
+      "disc": "production",
+      "rarity": "common",
+      "cost": 1,
+      "glyph": "DB",
+      "text": "Give a friendly unit +2 Power.",
+      "target": "friendlyUnit",
+      "effects": [
+        {
+          "op": "buff",
+          "power": 2,
+          "integrity": 0,
+          "to": "target"
+        }
+      ],
+      "flavor": "Find the constraint. Remove the constraint."
+    },
+    {
+      "id": "choke-back",
+      "name": "Choke Back",
+      "type": "operation",
+      "disc": "production",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "CB",
+      "text": "An enemy unit loses 1 Power and is Stuck (can't attack next turn).",
+      "target": "enemyUnit",
+      "effects": [
+        {
+          "op": "buff",
+          "power": -1,
+          "integrity": 0,
+          "to": "target"
+        },
+        {
+          "op": "stun",
+          "to": "target"
+        }
+      ],
+      "flavor": "24/64ths. Hold it there."
+    },
+    {
+      "id": "deepwater-field",
+      "name": "Deepwater Field",
+      "type": "field",
+      "disc": "production",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "DW",
+      "text": "Field: at the start of each turn, that player's units restore 1 Integrity.",
+      "field": "deepwater",
+      "flavor": "Two thousand metres of water and a long tie-back."
+    },
+    {
+      "id": "mudlogger",
+      "name": "Mudlogger",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "common",
+      "cost": 1,
+      "power": 2,
+      "integrity": 1,
+      "glyph": "ML",
+      "flavor": "Reads the cuttings before anyone else does."
+    },
+    {
+      "id": "petrophysicist",
+      "name": "Petrophysicist",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "uncommon",
+      "cost": 2,
+      "power": 2,
+      "integrity": 2,
+      "glyph": "PP",
+      "text": "Rig-Up: deal 1 damage to an enemy unit.",
+      "onPlay": {
+        "target": "enemyUnit",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "target"
+          }
+        ]
+      },
+      "flavor": "Archie's law, applied with prejudice."
+    },
+    {
+      "id": "salt-dome",
+      "name": "Salt Dome",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 0,
+      "integrity": 7,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "SD",
+      "flavor": "It flows, it seals, it does not move for you."
+    },
+    {
+      "id": "seismic-crew",
+      "name": "Seismic Crew",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 1,
+      "integrity": 3,
+      "glyph": "SC",
+      "text": "Rig-Up: deal 1 damage to all enemy units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "allEnemyUnits"
+          }
+        ]
+      },
+      "flavor": "Ten thousand geophones and one very loud truck."
+    },
+    {
+      "id": "fault-block",
+      "name": "Fault Block",
+      "type": "operation",
+      "disc": "geoscience",
+      "rarity": "rare",
+      "cost": 4,
+      "glyph": "FB",
+      "text": "Destroy an enemy unit with 4 or less Integrity.",
+      "target": "enemyUnit",
+      "targetMaxIntegrity": 4,
+      "effects": [
+        {
+          "op": "destroy",
+          "to": "target"
+        }
+      ],
+      "flavor": "The seal was never there."
+    },
+    {
+      "id": "basin-modeller",
+      "name": "Basin Modeller",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "epic",
+      "cost": 6,
+      "power": 4,
+      "integrity": 5,
+      "glyph": "BM",
+      "text": "Rig-Up: deal 2 damage to all enemy units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 2,
+            "to": "allEnemyUnits"
+          }
+        ]
+      },
+      "flavor": "Two hundred million years of burial, simulated over lunch."
+    },
+    {
+      "id": "wildcatter",
+      "name": "The Wildcatter",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "legendary",
+      "cost": 5,
+      "power": 4,
+      "integrity": 4,
+      "kw": [
+        "spud"
+      ],
+      "glyph": "WC",
+      "text": "Rig-Up: draw a card for each enemy unit (up to 3).",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "drawPerEnemyUnit",
+            "max": 3
+          }
+        ]
+      },
+      "flavor": "Drilled where nobody else would. Usually dry. Not today."
+    },
+    {
+      "id": "packer",
+      "name": "Packer",
+      "type": "unit",
+      "disc": "completions",
+      "rarity": "common",
+      "cost": 2,
+      "power": 1,
+      "integrity": 4,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "PK",
+      "flavor": "Set it, test it, trust it."
+    },
+    {
+      "id": "perf-gun",
+      "name": "Perforating Gun",
+      "type": "unit",
+      "disc": "completions",
+      "rarity": "common",
+      "cost": 2,
+      "power": 3,
+      "integrity": 2,
+      "glyph": "PG",
+      "text": "P&A: deal 2 damage to a random enemy unit.",
+      "onDeath": {
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 2,
+            "to": "randomEnemyUnit"
+          }
+        ]
+      },
+      "flavor": "Shaped charges. Shaped opinions."
+    },
+    {
+      "id": "coiled-tubing",
+      "name": "Coiled Tubing Unit",
+      "type": "unit",
+      "disc": "completions",
+      "rarity": "uncommon",
+      "cost": 4,
+      "power": 3,
+      "integrity": 3,
+      "kw": [
+        "spud"
+      ],
+      "glyph": "CT",
+      "text": "Rig-Up: remove H₂S and Stuck from your units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "cleanse",
+            "to": "allFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "Two miles of pipe on a reel, ready to go anywhere."
+    },
+    {
+      "id": "frac-spread",
+      "name": "Frac Spread",
+      "type": "unit",
+      "disc": "completions",
+      "rarity": "rare",
+      "cost": 5,
+      "power": 4,
+      "integrity": 4,
+      "kw": [
+        "fracture"
+      ],
+      "glyph": "FS",
+      "text": "Rig-Up: give your other units +1 Power.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "buff",
+            "power": 1,
+            "integrity": 0,
+            "to": "otherFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "Forty thousand horsepower and a lot of sand."
+    },
+    {
+      "id": "acid-job",
+      "name": "Acid Job",
+      "type": "operation",
+      "disc": "completions",
+      "rarity": "common",
+      "cost": 2,
+      "glyph": "AJ",
+      "text": "Deal 3 damage to an enemy unit.",
+      "target": "enemyUnit",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 3,
+          "to": "target"
+        }
+      ],
+      "flavor": "15% HCl dissolves carbonate and patience alike."
+    },
+    {
+      "id": "cement-job",
+      "name": "Cement Job",
+      "type": "operation",
+      "disc": "completions",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "CJ",
+      "text": "Give a friendly unit +0/+3 and Casing.",
+      "target": "friendlyUnit",
+      "effects": [
+        {
+          "op": "buff",
+          "power": 0,
+          "integrity": 3,
+          "to": "target"
+        },
+        {
+          "op": "grant",
+          "keyword": "casing",
+          "to": "target"
+        }
+      ],
+      "flavor": "Top plug bumped. Pressure holding."
+    },
+    {
+      "id": "multistage-frac",
+      "name": "Multi-Stage Frac",
+      "type": "operation",
+      "disc": "completions",
+      "rarity": "epic",
+      "cost": 5,
+      "glyph": "MS",
+      "text": "Deal 2 damage to all enemies, including their Well.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 2,
+          "to": "allEnemies"
+        }
+      ],
+      "flavor": "Plug, perf, pump. Repeat forty times."
+    },
+    {
+      "id": "gas-detector",
+      "name": "Gas Detector",
+      "type": "unit",
+      "disc": "hse",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "integrity": 2,
+      "glyph": "GD",
+      "text": "Rig-Up: remove H₂S and Stuck from your units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "cleanse",
+            "to": "allFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "Beeps once at 10 ppm. Everyone listens."
+    },
+    {
+      "id": "safety-officer",
+      "name": "Safety Officer",
+      "type": "unit",
+      "disc": "hse",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 2,
+      "integrity": 4,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "SO",
+      "text": "Rig-Up: give a friendly unit BOP.",
+      "onPlay": {
+        "target": "friendlyUnit",
+        "effects": [
+          {
+            "op": "grant",
+            "keyword": "bop",
+            "to": "target"
+          }
+        ]
+      },
+      "flavor": "The permit is not paperwork. The permit is the job."
+    },
+    {
+      "id": "emergency-response",
+      "name": "Emergency Response",
+      "type": "operation",
+      "disc": "hse",
+      "rarity": "uncommon",
+      "cost": 3,
+      "glyph": "ER",
+      "text": "Restore 4 Integrity to all friendly units and 3 to your Well.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "heal",
+          "amount": 4,
+          "to": "allFriendlyUnits"
+        },
+        {
+          "op": "heal",
+          "amount": 3,
+          "to": "ownWell"
+        }
+      ],
+      "flavor": "Muster point B. Head count complete."
+    },
+    {
+      "id": "stop-work",
+      "name": "Stop Work Authority",
+      "type": "operation",
+      "disc": "hse",
+      "rarity": "rare",
+      "cost": 4,
+      "glyph": "SW",
+      "text": "All enemy units are Stuck (can't attack next turn).",
+      "target": "none",
+      "effects": [
+        {
+          "op": "stun",
+          "to": "allEnemyUnits"
+        }
+      ],
+      "flavor": "Anyone can call it. Everyone must respect it."
+    },
+    {
+      "id": "bop-stack",
+      "name": "BOP Stack",
+      "type": "unit",
+      "disc": "hse",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 3,
+      "integrity": 7,
+      "kw": [
+        "casing",
+        "bop"
+      ],
+      "glyph": "BS",
+      "flavor": "Annular, pipe rams, blind-shear rams. Tested every 14 days."
+    },
+    {
+      "id": "well-control-supervisor",
+      "name": "Well Control Supervisor",
+      "type": "unit",
+      "disc": "hse",
+      "rarity": "legendary",
+      "cost": 6,
+      "power": 4,
+      "integrity": 6,
+      "kw": [
+        "bop"
+      ],
+      "glyph": "WS",
+      "text": "Rig-Up: restore 6 to your Well and give all friendly units BOP.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "heal",
+            "amount": 6,
+            "to": "ownWell"
+          },
+          {
+            "op": "grant",
+            "keyword": "bop",
+            "to": "allFriendlyUnits"
+          }
+        ]
+      },
+      "flavor": "IWCF certified. Has seen a kick. Does not panic."
+    },
+    {
+      "id": "landman",
+      "name": "Landman",
+      "type": "unit",
+      "disc": "economics",
+      "rarity": "common",
+      "cost": 2,
+      "power": 1,
+      "integrity": 2,
+      "glyph": "LM",
+      "text": "Rig-Up: your next card this turn costs 2 less.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "discount",
+            "n": 2
+          }
+        ]
+      },
+      "flavor": "Mineral rights, surface rights, coffee rights."
+    },
+    {
+      "id": "royalty-owner",
+      "name": "Royalty Owner",
+      "type": "unit",
+      "disc": "economics",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 2,
+      "integrity": 3,
+      "glyph": "RO",
+      "text": "At the start of your turn, restore 1 to your Well.",
+      "onTurnStart": {
+        "effects": [
+          {
+            "op": "heal",
+            "amount": 1,
+            "to": "ownWell"
+          }
+        ]
+      },
+      "flavor": "One-eighth of everything, forever."
+    },
+    {
+      "id": "npv-analyst",
+      "name": "NPV Analyst",
+      "type": "unit",
+      "disc": "economics",
+      "rarity": "rare",
+      "cost": 4,
+      "power": 3,
+      "integrity": 3,
+      "glyph": "NA",
+      "text": "Rig-Up: draw a card. If you have more units than the enemy, draw another.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "draw",
+            "n": 1
+          },
+          {
+            "op": "draw",
+            "n": 1,
+            "if": "moreUnits"
+          }
+        ]
+      },
+      "flavor": "Discounted at ten percent, the future still looks good."
+    },
+    {
+      "id": "hedge-contract",
+      "name": "Hedge Contract",
+      "type": "operation",
+      "disc": "economics",
+      "rarity": "uncommon",
+      "cost": 1,
+      "glyph": "HC",
+      "text": "Give a friendly unit BOP. Draw a card.",
+      "target": "friendlyUnit",
+      "effects": [
+        {
+          "op": "grant",
+          "keyword": "bop",
+          "to": "target"
+        },
+        {
+          "op": "draw",
+          "n": 1
+        }
+      ],
+      "flavor": "Sold forward at $78. Sleep well."
+    },
+    {
+      "id": "oil-boom",
+      "name": "Oil Boom",
+      "type": "operation",
+      "disc": "economics",
+      "rarity": "epic",
+      "cost": 3,
+      "glyph": "OB",
+      "text": "Gain +1 max Budget. Draw a card.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "maxBudget",
+          "n": 1
+        },
+        {
+          "op": "draw",
+          "n": 1
+        }
+      ],
+      "flavor": "Every rig in the basin is booked."
+    },
+    {
+      "id": "shale-play",
+      "name": "Shale Play",
+      "type": "field",
+      "disc": "economics",
+      "rarity": "rare",
+      "cost": 2,
+      "glyph": "SP",
+      "text": "Field: at the start of each turn, that player draws an extra card.",
+      "field": "shale",
+      "flavor": "Factory drilling. Pad after pad after pad."
+    },
+    {
+      "id": "reverse-circulation",
+      "name": "Reverse Circulation",
+      "type": "operation",
+      "disc": "wildcat",
+      "rarity": "rare",
+      "cost": 1,
+      "glyph": "⇄",
+      "powerup": "reverse",
+      "text": "Power-up (Reverse): swap a unit's Power and Integrity.",
+      "target": "anyUnit",
+      "effects": [
+        {
+          "op": "swap",
+          "to": "target"
+        }
+      ],
+      "flavor": "Down the annulus, up the pipe. Everything flips."
+    },
+    {
+      "id": "wait-on-weather",
+      "name": "Wait on Weather",
+      "type": "operation",
+      "disc": "wildcat",
+      "rarity": "epic",
+      "cost": 3,
+      "glyph": "⏸",
+      "powerup": "skip",
+      "text": "Power-up (Skip): enemy units can't attack during their next turn.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "skip"
+        }
+      ],
+      "flavor": "Nobody works in 6-metre seas."
+    },
+    {
+      "id": "pit-gain",
+      "name": "Pit Gain +2",
+      "type": "operation",
+      "disc": "wildcat",
+      "rarity": "uncommon",
+      "cost": 2,
+      "glyph": "+2",
+      "powerup": "draw2",
+      "text": "Power-up (+2): add 2 Cuttings to the enemy's hand.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "junk",
+          "n": 2
+        }
+      ],
+      "flavor": "Twenty barrels you didn't ask for."
+    },
+    {
+      "id": "wildcat-well",
+      "name": "Wildcat Well",
+      "type": "operation",
+      "disc": "wildcat",
+      "rarity": "rare",
+      "cost": 0,
+      "glyph": "★",
+      "powerup": "wild",
+      "text": "Power-up (Wild): draw a card. Your next card this turn costs 2 less.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "draw",
+          "n": 1
+        },
+        {
+          "op": "discount",
+          "n": 2
+        }
+      ],
+      "flavor": "No offset data. No guarantees. No fear."
+    },
+    {
+      "id": "cuttings",
+      "name": "Cuttings",
+      "type": "operation",
+      "disc": "wildcat",
+      "rarity": "common",
+      "cost": 1,
+      "glyph": "··",
+      "token": true,
+      "junk": true,
+      "text": "Does nothing. At the end of your turn, each Cuttings in your hand deals 1 damage to your Well.",
+      "target": "none",
+      "effects": [],
+      "flavor": "Circulate it out, or it piles up."
+    },
+    {
+      "id": "spare-budget",
+      "name": "Spare Budget",
+      "type": "operation",
+      "disc": "economics",
+      "rarity": "common",
+      "cost": 0,
+      "glyph": "$",
+      "token": true,
+      "text": "Gain 1 Budget this turn.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "budget",
+          "n": 1
+        }
+      ],
+      "flavor": "Contingency, for going second."
+    },
+    {
+      "id": "black-gold-gusher",
+      "name": "Black Gold Gusher",
+      "type": "unit",
+      "disc": "reservoir",
+      "rarity": "brilliant",
+      "cost": 9,
+      "power": 8,
+      "integrity": 8,
+      "kw": [
+        "spud",
+        "fracture"
+      ],
+      "glyph": "BG",
+      "text": "Rig-Up: deal 3 damage to all enemy units.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 3,
+            "to": "allEnemyUnits"
+          }
+        ]
+      },
+      "flavor": "The derrick disappears in a column of oil. The town is rich by morning."
+    },
+    {
+      "id": "discovery-well",
+      "name": "Discovery Well",
+      "type": "unit",
+      "disc": "geoscience",
+      "rarity": "brilliant",
+      "cost": 7,
+      "power": 6,
+      "integrity": 6,
+      "glyph": "DS",
+      "text": "Rig-Up: draw 3 cards and restore 5 to your Well.",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "draw",
+            "n": 3
+          },
+          {
+            "op": "heal",
+            "amount": 5,
+            "to": "ownWell"
+          }
+        ]
+      },
+      "flavor": "Every basin has a first well. This is it."
+    },
+    {
+      "id": "gas-pocket",
+      "name": "Shallow Gas Pocket",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "integrity": 1,
+      "kw": [
+        "sour"
+      ],
+      "glyph": "GP",
+      "token": true,
+      "env": true,
+      "flavor": "Not on the site survey."
+    },
+    {
+      "id": "boulder-bed",
+      "name": "Boulder Bed",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "common",
+      "cost": 2,
+      "power": 1,
+      "integrity": 4,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "BB",
+      "env": true,
+      "flavor": "Bit bounce, string vibration, ruined cutters."
+    },
+    {
+      "id": "shallow-water-flow",
+      "name": "Shallow Water Flow",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "common",
+      "cost": 1,
+      "power": 2,
+      "integrity": 1,
+      "kw": [
+        "spud"
+      ],
+      "glyph": "SW",
+      "env": true,
+      "flavor": "Over-pressured sand at 600 feet below mudline."
+    },
+    {
+      "id": "overpressured-zone",
+      "name": "Overpressured Zone",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "uncommon",
+      "cost": 5,
+      "power": 4,
+      "integrity": 5,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "OZ",
+      "env": true,
+      "flavor": "Pore pressure 0.6 psi/ft and rising."
+    },
+    {
+      "id": "kick-hazard",
+      "name": "Kick!",
+      "type": "operation",
+      "disc": "hazard",
+      "rarity": "rare",
+      "cost": 3,
+      "glyph": "K!",
+      "env": true,
+      "text": "Deal 3 damage to the enemy Well. Summon a Shallow Gas Pocket.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 3,
+          "to": "enemyWell"
+        },
+        {
+          "op": "summon",
+          "card": "gas-pocket",
+          "n": 1
+        }
+      ],
+      "flavor": "Pit gain. Flow check. Shut in."
+    },
+    {
+      "id": "squall",
+      "name": "Squall",
+      "type": "operation",
+      "disc": "hazard",
+      "rarity": "common",
+      "cost": 2,
+      "glyph": "SQ",
+      "env": true,
+      "text": "Deal 1 damage to all enemy units.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 1,
+          "to": "allEnemyUnits"
+        }
+      ],
+      "flavor": "Forty knots, out of nowhere."
+    },
+    {
+      "id": "rogue-wave",
+      "name": "Rogue Wave",
+      "type": "operation",
+      "disc": "hazard",
+      "rarity": "uncommon",
+      "cost": 4,
+      "glyph": "RW",
+      "env": true,
+      "text": "Deal 4 damage to an enemy unit.",
+      "target": "enemyUnit",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 4,
+          "to": "target"
+        }
+      ],
+      "flavor": "Twice the significant wave height. Statistically rare. Here anyway."
+    },
+    {
+      "id": "lost-circulation",
+      "name": "Lost Circulation",
+      "type": "operation",
+      "disc": "hazard",
+      "rarity": "uncommon",
+      "cost": 3,
+      "glyph": "LC",
+      "env": true,
+      "text": "The enemy discards a random card. Draw a card.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "discard",
+          "n": 1
+        },
+        {
+          "op": "draw",
+          "n": 1
+        }
+      ],
+      "flavor": "Two hundred barrels of mud, gone into a vug."
+    },
+    {
+      "id": "super-typhoon",
+      "name": "Super Typhoon",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "legendary",
+      "cost": 7,
+      "power": 6,
+      "integrity": 6,
+      "glyph": "TY",
+      "env": true,
+      "text": "Rig-Up: all enemy units are Stuck (can't attack next turn).",
+      "onPlay": {
+        "target": "none",
+        "effects": [
+          {
+            "op": "stun",
+            "to": "allEnemyUnits"
+          }
+        ]
+      },
+      "flavor": "Category 5. Evacuate the platform."
+    },
+    {
+      "id": "price-crash",
+      "name": "Price Crash",
+      "type": "operation",
+      "disc": "hazard",
+      "rarity": "rare",
+      "cost": 2,
+      "glyph": "PC",
+      "env": true,
+      "text": "Enemy cards cost 1 more during their next turn. Draw a card.",
+      "target": "none",
+      "effects": [
+        {
+          "op": "taxNext",
+          "n": 1
+        },
+        {
+          "op": "draw",
+          "n": 1
+        }
+      ],
+      "flavor": "$78 on Monday. $41 by Friday."
+    },
+    {
+      "id": "activist-investor",
+      "name": "Activist Investor",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "uncommon",
+      "cost": 3,
+      "power": 3,
+      "integrity": 3,
+      "glyph": "AI",
+      "env": true,
+      "text": "At the start of your turn, deal 1 damage to the enemy Well.",
+      "onTurnStart": {
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "enemyWell"
+          }
+        ]
+      },
+      "flavor": "Has a slide deck about your capital discipline."
+    },
+    {
+      "id": "bear-market",
+      "name": "Bear Market",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "epic",
+      "cost": 6,
+      "power": 5,
+      "integrity": 6,
+      "kw": [
+        "casing"
+      ],
+      "glyph": "BR",
+      "env": true,
+      "flavor": "Rig count halves. Patience required."
+    },
+    {
+      "id": "hurricane-alley",
+      "name": "Hurricane Alley",
+      "type": "field",
+      "disc": "hazard",
+      "rarity": "rare",
+      "cost": 3,
+      "glyph": "HA",
+      "env": true,
+      "text": "Field: at the start of each turn, deal 1 damage to all of that player's units.",
+      "field": "hurricane",
+      "flavor": "June to November, every year."
+    },
+    {
+      "id": "the-blowout",
+      "name": "The Blowout",
+      "type": "unit",
+      "disc": "hazard",
+      "rarity": "brilliant",
+      "cost": 9,
+      "power": 9,
+      "integrity": 9,
+      "kw": [
+        "fracture",
+        "sour"
+      ],
+      "glyph": "!!",
+      "env": true,
+      "flavor": "Every barrier failed. The well is talking now."
+    }
+  ],
+  "commanders": {
+    "drilling-engineer": {
+      "name": "Drilling Engineer",
+      "disc": "drilling",
+      "power": {
+        "name": "Spud In",
+        "cost": 2,
+        "text": "Deal 1 damage to an enemy unit or the enemy Well.",
+        "target": "enemyAny",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "target"
+          }
+        ]
+      }
+    },
+    "reservoir-engineer": {
+      "name": "Reservoir Engineer",
+      "disc": "reservoir",
+      "power": {
+        "name": "Pressure Support",
+        "cost": 2,
+        "text": "Restore 2 to a friendly unit or your Well.",
+        "target": "friendlyAny",
+        "effects": [
+          {
+            "op": "heal",
+            "amount": 2,
+            "to": "target"
+          }
+        ]
+      }
+    },
+    "production-engineer": {
+      "name": "Production Engineer",
+      "disc": "production",
+      "power": {
+        "name": "Optimise",
+        "cost": 2,
+        "text": "Give a friendly unit +1 Power.",
+        "target": "friendlyUnit",
+        "effects": [
+          {
+            "op": "buff",
+            "power": 1,
+            "integrity": 0,
+            "to": "target"
+          }
+        ]
+      }
+    },
+    "the-formation": {
+      "name": "The Overpressured Formation",
+      "disc": "hazard",
+      "power": {
+        "name": "Shallow Gas",
+        "cost": 2,
+        "text": "Summon a 1/1 Shallow Gas Pocket with Sour.",
+        "target": "none",
+        "effects": [
+          {
+            "op": "summon",
+            "card": "gas-pocket",
+            "n": 1
+          }
+        ]
+      },
+      "passive": {
+        "name": "Abnormal Pressure",
+        "every": 3,
+        "text": "Every 3rd turn: deal 2 damage to the enemy Well and summon a Shallow Gas Pocket.",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 2,
+            "to": "enemyWell"
+          },
+          {
+            "op": "summon",
+            "card": "gas-pocket",
+            "n": 1
+          }
+        ]
+      }
+    },
+    "typhoon-season": {
+      "name": "Typhoon Season",
+      "disc": "hazard",
+      "power": {
+        "name": "Gust",
+        "cost": 2,
+        "text": "Deal 1 damage to an enemy unit.",
+        "target": "enemyUnit",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "target"
+          }
+        ]
+      },
+      "passive": {
+        "name": "Squall Line",
+        "every": 4,
+        "text": "Every 4th turn: deal 1 damage to all enemy units.",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "allEnemyUnits"
+          }
+        ]
+      }
+    },
+    "market-crash": {
+      "name": "Market Crash",
+      "disc": "hazard",
+      "power": {
+        "name": "Short Sell",
+        "cost": 2,
+        "text": "Deal 1 damage to the enemy Well.",
+        "target": "none",
+        "effects": [
+          {
+            "op": "damage",
+            "amount": 1,
+            "to": "enemyWell"
+          }
+        ]
+      },
+      "passive": {
+        "name": "Margin Call",
+        "every": 3,
+        "text": "Every 3rd turn: deal 2 damage to the enemy Well, and enemy cards cost 1 more during their next turn.",
+        "effects": [
+          {
+            "op": "taxNext",
+            "n": 1
+          },
+          {
+            "op": "damage",
+            "amount": 2,
+            "to": "enemyWell"
+          }
+        ]
+      }
+    }
+  },
+  "starterDecks": {
+    "drill-crew": {
+      "name": "Drill Crew",
+      "commander": "drilling-engineer",
+      "discs": [
+        "drilling",
+        "completions"
+      ],
+      "blurb": "Aggressive. Spud units, Fracture and burst damage.",
+      "cards": [
+        "directional-driller",
+        "roughneck",
+        "derrickhand",
+        "derrickhand",
+        "mud-engineer",
+        "pdc-bit",
+        "pdc-bit",
+        "directional-driller",
+        "top-drive",
+        "turbodrill",
+        "make-hole",
+        "make-hole",
+        "kill-mud",
+        "packer",
+        "perf-gun",
+        "perf-gun",
+        "acid-job",
+        "coiled-tubing",
+        "frac-spread",
+        "wildcat-well"
+      ]
+    },
+    "reservoir-team": {
+      "name": "Reservoir Team",
+      "commander": "reservoir-engineer",
+      "discs": [
+        "reservoir",
+        "geoscience"
+      ],
+      "blurb": "Control. Card draw, area damage and a huge late game.",
+      "cards": [
+        "core-sample",
+        "core-sample",
+        "mudlogger",
+        "pvt-analyst",
+        "pvt-analyst",
+        "petrophysicist",
+        "petrophysicist",
+        "waterflood-injector",
+        "salt-dome",
+        "seismic-crew",
+        "reservoir-simulator",
+        "material-balance",
+        "history-match",
+        "fault-block",
+        "gas-cap-drive",
+        "waterflood-injector",
+        "co2-flood",
+        "supergiant-field",
+        "reverse-circulation",
+        "shale-play"
+      ]
+    },
+    "production-ops": {
+      "name": "Production Ops",
+      "commander": "production-engineer",
+      "discs": [
+        "production",
+        "hse",
+        "economics"
+      ],
+      "blurb": "Midrange. Sturdy units, steady Well damage and shields.",
+      "cards": [
+        "gas-lift",
+        "gas-lift",
+        "npv-analyst",
+        "lease-pumper",
+        "lease-pumper",
+        "landman",
+        "esp-pump",
+        "esp-pump",
+        "separator",
+        "safety-officer",
+        "royalty-owner",
+        "christmas-tree",
+        "debottleneck",
+        "choke-back",
+        "hedge-contract",
+        "emergency-response",
+        "bop-stack",
+        "fpso",
+        "pit-gain",
+        "deepwater-field"
+      ]
+    }
+  },
+  "bosses": {
+    "the-formation": {
+      "name": "The Overpressured Formation",
+      "commander": "the-formation",
+      "title": "Subsurface boss",
+      "blurb": "Shallow gas, boulder beds and pressure that comes back every third turn.",
+      "cards": [
+        "gas-pocket",
+        "gas-pocket",
+        "shallow-water-flow",
+        "shallow-water-flow",
+        "boulder-bed",
+        "boulder-bed",
+        "petrophysicist",
+        "salt-dome",
+        "salt-dome",
+        "seismic-crew",
+        "overpressured-zone",
+        "overpressured-zone",
+        "overpressured-zone",
+        "kick-hazard",
+        "kick-hazard",
+        "lost-circulation",
+        "fault-block",
+        "basin-modeller",
+        "pit-gain",
+        "the-blowout"
+      ]
+    },
+    "typhoon-season": {
+      "name": "Typhoon Season",
+      "commander": "typhoon-season",
+      "title": "Weather boss",
+      "blurb": "Squalls, rogue waves and a Category 5 finisher. Spreads damage across your board.",
+      "cards": [
+        "shallow-water-flow",
+        "shallow-water-flow",
+        "boulder-bed",
+        "squall",
+        "squall",
+        "rogue-wave",
+        "lease-pumper",
+        "lease-pumper",
+        "packer",
+        "safety-officer",
+        "overpressured-zone",
+        "hurricane-alley",
+        "wait-on-weather",
+        "acid-job",
+        "emergency-response",
+        "super-typhoon",
+        "seismic-crew",
+        "make-hole",
+        "mudlogger",
+        "gas-detector"
+      ]
+    },
+    "market-crash": {
+      "name": "Market Crash",
+      "commander": "market-crash",
+      "title": "Economics boss",
+      "blurb": "Taxes your Budget, chips at your Well and outlasts you with walls.",
+      "cards": [
+        "landman",
+        "royalty-owner",
+        "royalty-owner",
+        "activist-investor",
+        "activist-investor",
+        "npv-analyst",
+        "npv-analyst",
+        "hedge-contract",
+        "price-crash",
+        "price-crash",
+        "boulder-bed",
+        "christmas-tree",
+        "lease-pumper",
+        "esp-pump",
+        "esp-pump",
+        "bear-market",
+        "bear-market",
+        "oil-boom",
+        "pit-gain",
+        "acid-job"
+      ]
+    }
+  }
+}

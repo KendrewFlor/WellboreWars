@@ -1,0 +1,8 @@
+#!/bin/sh
+# Strips AI co-author trailers (Claude, Copilot, etc.) from commit messages so
+# AI tools never show up as contributors on GitHub.
+# Enable once per clone:  git config core.hooksPath .githooks
+msg_file="$1"
+tmp="$msg_file.tmp"
+grep -viE '^(co-authored-by:.*(claude|anthropic|copilot|openai|chatgpt|cursor|gemini|noreply@anthropic)|claude-session:|🤖 generated with)' "$msg_file" > "$tmp" || true
+mv "$tmp" "$msg_file"

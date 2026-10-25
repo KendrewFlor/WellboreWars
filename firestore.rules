@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// Wellbore Wars — Firestore security rules (Spark / free tier).
+//
+// Data model: one document per player at /players/{uid}
+//   { name: string(2–16), wins: int, losses: int, updatedAt: timestamp }
+//
+// What these rules guarantee:
+//   • Only the signed-in owner can write their own document (anonymous auth).
+//   • No extra fields, correct types, name length limited.
+//   • Each write can add at most ONE result, and counters can never go down.
+//   • updatedAt must be the server's own clock (request.time) — no backdating.
+//   • At most one write every 30 seconds per player (spam / quota protection).
+//   • Anyone may read the leaderboard, but list queries are capped at 25 docs.
+//   • Nothing else in the database is readable or writable.
+//
+// Honest limitation: with no game server, a determined player could still report
+// a win they didn't earn (one per 30 s). The rules make that slow and visible,
+// not impossible. Don't put prizes on this leaderboard.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function validPlayer(d) {
+      return d.keys().hasOnly(['name', 'wins', 'losses', 'updatedAt'])
+        && d.name is string
+        && d.name.size() >= 2 && d.name.size() <= 16
+        && d.name.matches('^[A-Za-z0-9 _.-]+$')
+        && d.get('wins', 0) is int && d.get('wins', 0) >= 0
+        && d.get('losses', 0) is int && d.get('losses', 0) >= 0
+        && d.updatedAt == request.time;
+    }
+
+    function results(d) {
+      return d.get('wins', 0) + d.get('losses', 0);
+    }
+
+    match /players/{uid} {
+      allow get: if true;
+      allow list: if request.query.limit <= 25;
+
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && validPlayer(request.resource.data)
+        && results(request.resource.data) <= 1;
+
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && validPlayer(request.resource.data)
+        && request.resource.data.get('wins', 0) >= resource.data.get('wins', 0)
+        && request.resource.data.get('losses', 0) >= resource.data.get('losses', 0)
+        && results(request.resource.data) - results(resource.data) <= 1
+        && request.time > resource.data.updatedAt + duration.value(30, 's');
+
+      allow delete: if false;
+    }
+
+    // Deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
