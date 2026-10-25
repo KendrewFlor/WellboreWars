@@ -2,11 +2,6 @@
 
 **A 1v1 petroleum engineering trading card game. You are the engineer. The Environment is your opponent.**
 
-[![CI](https://github.com/KendrewFlor/wellbore-wars/actions/workflows/ci.yml/badge.svg)](https://github.com/KendrewFlor/wellbore-wars/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/KendrewFlor/wellbore-wars/actions/workflows/codeql.yml/badge.svg)](https://github.com/KendrewFlor/wellbore-wars/actions/workflows/codeql.yml)
-![Dependencies: 0](https://img.shields.io/badge/dependencies-0-brightgreen)
-![License: MIT](https://img.shields.io/badge/license-MIT-blue)
-
 ### ▶ [Play it in your browser](https://kendrewflor.github.io/wellbore-wars/)
 
 ![The battle board: your crew against an overpressured formation](docs/screenshot-battle.png)
